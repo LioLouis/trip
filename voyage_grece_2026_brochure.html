@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -45,8 +44,7 @@
             .no-break { page-break-inside: avoid; }
             .hero-section { height: 100vh !important; page-break-after: always; }
             .container { padding: 2cm !important; max-width: 100% !important; }
-            .itinerary-day { box-shadow: none !important; border: 1px solid #eee; }
-            /* Hide URL links on print */
+            .itinerary-day { box-shadow: none !important; border: 1px solid #eee; display: flex !important; flex-direction: row !important; }
             a { text-decoration: none; color: inherit; }
         }
 
@@ -264,6 +262,75 @@
         .img-amorgos { background-image: url('https://images.unsplash.com/photo-1600670984180-8798993883ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'); }
         .img-folegandros { background-image: url('https://images.unsplash.com/photo-1533083656961-1250b7194f4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'); }
 
+        /* ========================================= */
+        /* --- MOBILE RESPONSIVE OPTIMIZATIONS ---   */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            /* Hero Section adjustments */
+            .hero-section {
+                height: 60vh;
+                min-height: 450px;
+            }
+            .hero-content {
+                padding: 35px 20px;
+                margin: 0 15px;
+                width: 100%;
+            }
+            .hero-content h1 {
+                font-size: 2.2em;
+            }
+            .hero-content p {
+                font-size: 1.1em;
+            }
+
+            /* Intro Text */
+            .concept-section {
+                padding: 40px 0;
+            }
+            .concept-section p {
+                font-size: 1.05em;
+            }
+            .section-title {
+                font-size: 1.8em;
+                margin: 40px 0 30px;
+            }
+
+            /* Itinerary Days */
+            .itinerary-day {
+                flex-direction: column; /* Stack image on top, content below */
+                margin-bottom: 40px;
+            }
+            .day-image, .day-content {
+                width: 100%;
+            }
+            .day-image {
+                min-height: 250px;
+                order: -1; /* Forces the image to always be on top on mobile */
+            }
+            .day-content {
+                padding: 30px 20px;
+            }
+            .day-title {
+                font-size: 1.6em;
+            }
+
+            /* Info & Budget Grid */
+            .info-grid {
+                grid-template-columns: 1fr; /* Stack cards vertically */
+                gap: 30px;
+                margin-top: 30px;
+            }
+            .info-card {
+                padding: 30px 20px;
+            }
+            .info-card h3 {
+                font-size: 1.4em;
+            }
+        }
     </style>
 </head>
 <body>
