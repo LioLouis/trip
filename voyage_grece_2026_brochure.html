@@ -1,602 +1,345 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Cyclades Confidentielles - Voyage sur Mesure</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joyeux Anniversaire Camille 🎂</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rose: #ff5e8a;
+    --violet: #7f5cff;
+    --or: #ffd166;
+    --menthe: #06d6a0;
+    --nuit: #0f0c29;
+  }
+  html, body {
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  /* ---------- Étoiles animées en fond ---------- */
+  .stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+      radial-gradient(2px 2px at 60% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 20%, #fff, transparent),
+      radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+      radial-gradient(2px 2px at 90% 50%, #fff, transparent),
+      radial-gradient(1px 1px at 10% 60%, #fff, transparent);
+    background-size: 200% 200%;
+    animation: twinkle 6s linear infinite;
+    opacity: 0.6;
+  }
+  @keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:.8} }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
+  /* ---------- En-tête ---------- */
+  header {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 60px 20px 30px;
+  }
+  header h1 {
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    background: linear-gradient(90deg, var(--rose), var(--or), var(--menthe), var(--violet));
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s linear infinite;
+    letter-spacing: 1px;
+  }
+  @keyframes shimmer { to { background-position: 300% 0; } }
+  header p {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-style: italic;
+  }
+  .cake {
+    font-size: 4rem;
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+    margin: 20px 0;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50%     { transform: translateY(-15px) rotate(3deg); }
+  }
 
-        :root {
-            --primary: #1a365d; 
-            --secondary: #cda434; 
-            --text-dark: #2d3748;
-            --text-light: #4a5568;
-            --bg-color: #faf9f6; 
-            --white: #ffffff;
-            --accent-bg: #f0f4f8;
-        }
+  /* ---------- Message d'intro ---------- */
+  .intro {
+    position: relative; z-index: 2;
+    max-width: 720px;
+    margin: 20px auto 40px;
+    padding: 30px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  .intro strong { color: var(--or); }
 
-        body {
-            font-family: 'Lato', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-color);
-            line-height: 1.7;
-            margin: 0;
-            padding: 0;
-        }
+  /* ---------- Cadeaux ---------- */
+  .gifts {
+    position: relative; z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 30px 60px;
+  }
+  .gift {
+    perspective: 1200px;
+    height: 380px;
+    cursor: pointer;
+  }
+  .gift-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .gift.flipped .gift-inner { transform: rotateY(180deg); }
 
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
-            font-weight: 400;
-        }
+  .gift-face {
+    position: absolute; inset: 0;
+    border-radius: 20px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
 
-        /* --- Print & Pagination --- */
-        @page { size: A4; margin: 0; }
+  /* Face avant (paquet cadeau) */
+  .front {
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    position: relative;
+    overflow: hidden;
+  }
+  .front::before, .front::after {
+    content: '';
+    position: absolute;
+    background: var(--or);
+    box-shadow: 0 0 20px rgba(255,209,102,0.6);
+  }
+  .front::before {
+    width: 100%; height: 30px;
+    top: 50%; left: 0;
+    transform: translateY(-50%);
+  }
+  .front::after {
+    width: 30px; height: 100%;
+    left: 50%; top: 0;
+    transform: translateX(-50%);
+  }
+  .bow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    z-index: 2;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+    animation: wiggle 3s ease-in-out infinite;
+  }
+  @keyframes wiggle {
+    0%,100% { transform: translate(-50%, -50%) rotate(-5deg); }
+    50%     { transform: translate(-50%, -50%) rotate(5deg); }
+  }
+  .front .hint {
+    position: absolute;
+    bottom: 20px; left: 0; right: 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    z-index: 2;
+    letter-spacing: 1px;
+  }
 
-        @media print {
-            body { background-color: var(--white); }
-            .page-break { page-break-before: always; }
-            .no-break { page-break-inside: avoid; }
-            .hero-section { height: 100vh !important; page-break-after: always; }
-            .container { padding: 2cm !important; max-width: 100% !important; }
-            .itinerary-day { box-shadow: none !important; border: 1px solid #eee; display: flex !important; flex-direction: row !important; }
-            a { text-decoration: none; color: inherit; }
-        }
+  /* Face arrière (le cadeau révélé) */
+  .back {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, #ffffff 0%, #f8f4ff 100%);
+    color: #2b2b3d;
+  }
+  .back .icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: pop 0.6s ease-out;
+  }
+  @keyframes pop {
+    0% { transform: scale(0) rotate(-180deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .back h2 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: var(--violet);
+  }
+  .back p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .back a {
+    display: inline-block;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--rose), var(--violet));
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(127,92,255,0.4);
+  }
+  .back a:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(127,92,255,0.6);
+  }
 
-        /* --- Layout --- */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+  /* ---------- Signature ---------- */
+  footer {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 30px 20px 50px;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  footer .heart {
+    color: var(--rose);
+    animation: heartbeat 1.2s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.3); }
+  }
 
-        /* --- Cover/Hero --- */
-        .hero-section {
-            position: relative;
-            height: 80vh;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-            background-color: var(--primary);
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(26, 54, 93, 0.3), rgba(26, 54, 93, 0.7));
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 50px;
-            background: rgba(255, 255, 255, 0.95);
-            max-width: 700px;
-            border: 1px solid var(--secondary);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            box-sizing: border-box;
-        }
-
-        .tagline {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.85em;
-            color: var(--secondary);
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .hero-content h1 { font-size: 2.8em; margin: 0 0 15px 0; line-height: 1.2; }
-        .hero-content p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2em; color: var(--text-light); margin: 0; }
-
-        /* Quick Facts */
-        .quick-facts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        .fact-tag {
-            background: var(--white);
-            border: 1px solid #eee;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            color: var(--text-dark);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            font-family: 'Lato', sans-serif;
-        }
-        .fact-tag strong { color: var(--secondary); margin-right: 5px; font-weight: 700; }
-
-        /* --- Intro & Concept --- */
-        .concept-section { text-align: center; padding: 60px 0 20px; max-width: 800px; margin: 0 auto; box-sizing: border-box; }
-        .concept-section p { font-size: 1.15em; color: var(--text-light); }
-        .concept-section::after { content: ''; display: block; width: 60px; height: 2px; background-color: var(--secondary); margin: 40px auto 0; }
-
-        /* Custom elegant lists */
-        .custom-list {
-            padding-left: 20px;
-            list-style-type: none;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .custom-list li {
-            margin-bottom: 10px;
-            position: relative;
-            color: var(--text-dark);
-            font-size: 0.95em;
-        }
-        .custom-list li::before {
-            content: '✦';
-            color: var(--secondary);
-            position: absolute;
-            left: -20px;
-            font-size: 0.9em;
-            top: 2px;
-        }
-
-        .center-list {
-            display: inline-block;
-            text-align: left;
-            margin: 20px auto;
-        }
-
-        /* --- Itinerary --- */
-        .section-title { text-align: center; font-size: 2.2em; margin: 60px 0 40px; position: relative; }
-
-        .itinerary-day {
-            display: flex;
-            margin-bottom: 50px;
-            background: var(--white);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .day-image {
-            width: 45%;
-            position: relative;
-            background-color: #e2e8f0;
-        }
-
-        .day-image img {
-            width: 100%;
-            height: 100%;
-            min-height: 350px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .day-content {
-            width: 55%;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-
-        .day-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: var(--secondary); margin-bottom: 10px; }
-        .day-title { font-size: 1.8em; margin-top: 0; margin-bottom: 20px; line-height: 1.2; }
-        .day-content p { margin: 0 0 10px 0; font-size: 0.95em;}
-
-        .good-address { 
-            margin-top: 25px; 
-            padding: 20px 25px; 
-            background-color: var(--accent-bg); 
-            border-left: 3px solid var(--secondary); 
-            position: relative; 
-            box-sizing: border-box;
-            width: 100%;
-        }
-        .good-address::before { content: '✦'; position: absolute; left: -12px; top: 20px; color: var(--secondary); background: var(--white); border-radius: 50%; padding: 2px; font-size: 14px; }
-        .good-address h4 { margin: 0 0 10px 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; font-family: 'Lato', sans-serif; color: var(--primary); }
-        .good-address p { margin: 0; font-size: 0.95em; font-style: italic; }
-
-        /* --- Map Styling --- */
-        #map {
-            height: 500px;
-            width: 100%;
-            border-radius: 4px;
-            margin: 20px 0 50px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
-            border: 1px solid #eee;
-            z-index: 1; 
-        }
-        .leaflet-popup-content {
-            font-family: 'Lato', sans-serif;
-            font-size: 14px;
-            margin: 12px;
-            color: var(--text-dark);
-        }
-        .leaflet-popup-content b {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
-            font-size: 16px;
-        }
-
-        /* --- Practical Info & Budget --- */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
-        .info-card { background: var(--white); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); box-sizing: border-box;}
-        .info-card h3 { font-size: 1.6em; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 0; border-bottom: 1px dotted #e2e8f0; font-size: 0.95em; }
-        tr:last-child td { border-bottom: none; }
-        .price-total { font-size: 1.2em; font-weight: 700; color: var(--primary); padding-top: 20px !important; border-bottom: none !important; }
-
-        /* ========================================= */
-        /* --- MOBILE RESPONSIVE OPTIMIZATIONS ---   */
-        /* ========================================= */
-        @media (max-width: 768px) {
-            .container { padding: 20px 15px; }
-            .hero-section { height: auto; min-height: 100vh; padding: 40px 0; }
-            .hero-content { padding: 35px 20px; margin: 0 15px; width: auto; }
-            .hero-content h1 { font-size: 2.2em; }
-            .hero-content p { font-size: 1.1em; }
-            .quick-facts { gap: 10px; }
-            .fact-tag { font-size: 0.85em; padding: 6px 12px; }
-
-            .concept-section { padding: 40px 10px; }
-            .concept-section p { font-size: 1.05em; }
-            .section-title { font-size: 1.8em; margin: 40px 0 30px; }
-
-            .itinerary-day { flex-direction: column; margin-bottom: 40px; }
-            .day-image, .day-content { width: 100%; }
-            .day-image { order: -1; }
-            .day-image img { height: 250px; min-height: 250px; }
-            .day-content { padding: 30px 20px; }
-            .day-title { font-size: 1.6em; }
-
-            #map { height: 350px; } 
-
-            .info-grid { grid-template-columns: 1fr; gap: 30px; margin-top: 30px; }
-            .info-card { padding: 30px 20px; }
-            .info-card h3 { font-size: 1.4em; }
-        }
-    </style>
+  /* ---------- Confettis ---------- */
+  .confetti {
+    position: fixed;
+    width: 10px; height: 14px;
+    top: -20px;
+    z-index: 3;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(105vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
 </head>
 <body>
 
-    <!-- Couverture -->
-    <div class="hero-section">
-        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
-             alt="Cyclades" class="hero-bg" 
-             referrerpolicy="no-referrer" crossorigin="anonymous"
-             onerror="this.onerror=null; this.src='https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=1600';">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <span class="tagline">Carnet de voyage · Grèce · Cyclades</span>
-            <h1>Les îles grecques confidentielles, en version douce et solaire</h1>
-            <p>Un itinéraire pensé pour un couple qui veut prendre son temps, éviter la foule et profiter des plages, de la marche, des tavernes et de la mer Égée.</p>
+<div class="stars"></div>
 
-            <div class="quick-facts">
-                <div class="fact-tag"><strong>Voyageurs</strong>2 personnes</div>
-                <div class="fact-tag"><strong>Dates</strong>Fin août / début sept. 2026</div>
-                <div class="fact-tag"><strong>Budget</strong>2 000–3 000 €/pers.</div>
-                <div class="fact-tag"><strong>Rythme</strong>Relaxé à modéré</div>
-                <div class="fact-tag"><strong>Durée</strong>14 jours</div>
-            </div>
-        </div>
+<header>
+  <h1>Joyeux Anniversaire Camille&nbsp;!</h1>
+  <div class="cake">🎂</div>
+  <p>Une année de plus, mille aventures de plus ✨</p>
+</header>
+
+<section class="intro">
+  <p>Ma Camille chérie,<br><br>
+  Pour marquer ce jour très spécial, tes amis et moi t'avons préparé <strong>trois surprises</strong> pensées rien que pour toi&nbsp;: du voyage, du grand air et de la liberté à deux roues.<br><br>
+  🎁 <em>Clique sur chaque paquet pour découvrir ton cadeau…</em></p>
+</section>
+
+<section class="gifts">
+
+  <!-- CADEAU 1 : Eurostar -->
+  <div class="gift" onclick="this.classList.toggle('flipped'); pop()">
+    <div class="gift-inner">
+      <div class="gift-face front">
+        <span class="bow">🎀</span>
+        <span class="hint">Clique pour ouvrir</span>
+      </div>
+      <div class="gift-face back">
+        <div class="icon">🚄</div>
+        <h2>Direction Londres&nbsp;!</h2>
+        <p>Un bon <strong>Eurostar</strong> pour ton aller-retour à Londres en décembre. Prépare ton pull, ton appareil photo et ta liste de pubs — la City t'attend&nbsp;! 🇬🇧☕</p>
+        <a href="https://vouchers.eurostar.com/Eurostar/byemail/Eurostar/ChooseProduct?currencyCode=EUR&language=French&country=France&countryId=2" target="_blank" rel="noopener">Voir le bon Eurostar</a>
+      </div>
     </div>
+  </div>
 
-    <div class="container">
-
-        <div class="concept-section no-break">
-            <h2>L'Esprit de votre Voyage</h2>
-            <p>Ce séjour privilégie les îles où l’on peut rester plusieurs nuits sans courir partout, avec des étapes simples, des plages accessibles, des randonnées agréables et de bonnes tables de village.</p>
-            <p>Les îles retenues sont volontairement moins évidentes que Santorin ou Mykonos : <strong>Naxos</strong> pour sa diversité, <strong>Amorgos</strong> pour son côté minéral et <strong>Folegandros</strong> pour son élégance calme.</p>
-
-            <h3 style="margin-top: 40px; font-size: 1.5em;">Ce qu'on y cherche :</h3>
-            <div class="center-list">
-                <ul class="custom-list">
-                    <li>Se détendre et prendre son temps.</li>
-                    <li>Marcher un peu chaque jour.</li>
-                    <li>Bien manger sans se ruiner.</li>
-                    <li>Profiter de la mer et de vraies plages.</li>
-                    <li>Sortir boire un verre sans faire la fête tard.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="page-break"></div>
-        <h2 class="section-title">Votre Itinéraire Détaillé</h2>
-
-        <!-- Etape 1 -->
-        <div class="itinerary-day no-break">
-            <div class="day-image">
-                <img src="https://images.unsplash.com/photo-1555992828-ca4dbe41d294?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                     alt="Athènes" referrerpolicy="no-referrer" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='https://images.pexels.com/photos/164336/pexels-photo-164336.jpeg?auto=compress&cs=tinysrgb&w=1000';">
-            </div>
-            <div class="day-content">
-                <div class="day-subtitle">Jour 1 • Le Prélude</div>
-                <h3 class="day-title">Arrivée à Athènes</h3>
-                <p><strong>Transport :</strong> Vol Paris CDG → Athènes, puis métro ligne 3 jusqu’à Monastiraki.</p>
-                <p><strong>Soirée :</strong> Installation dans une auberge de jeunesse bien notée, balade dans Monastiraki, dîner simple dans une taverne du quartier.</p>
-                <div class="good-address">
-                    <h4>L'Objectif</h4>
-                    <p>Une seule nuit à Athènes, juste le temps de se poser avant de rejoindre les îles le lendemain matin.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Etape 2 -->
-        <div class="itinerary-day no-break">
-            <div class="day-content">
-                <div class="day-subtitle">Jours 2 à 6 • La Généreuse</div>
-                <h3 class="day-title">Naxos, Terroir & Mythologie</h3>
-                <p><strong>Jour 2 :</strong> Métro jusqu’au Pirée, puis ferry pour Naxos. Arrivée à Naxos Town, installation, première promenade sur le port. Coucher de soleil à la Portara, la grande porte de marbre face à la mer.</p>
-
-                <ul class="custom-list">
-                    <li><strong>Jour 3 :</strong> Chora, quartier vénitien, petites boutiques, produits locaux et tavernes.</li>
-                    <li><strong>Jour 4 :</strong> Plages du sud : Agios Prokopios et Agia Anna, baignade et repos.</li>
-                    <li><strong>Jour 5 :</strong> Randonnée Chalki → Filoti → Mont Zeus (Zas).</li>
-                    <li><strong>Jour 6 :</strong> Villages intérieurs comme Apeiranthos et plage de Plaka.</li>
-                </ul>
-                <div class="good-address">
-                    <h4>Budget & Conseils</h4>
-                    <p><strong>Budget estimé :</strong> ~70–100 €/jour/pers.</p>
-                    <ul class="custom-list" style="margin-top: 10px; margin-bottom: 0;">
-                        <li><strong>Gourmandise :</strong> Les tavernes des villages montagneux (Filoti, Apeiranthos) sont bien moins chères qu'au port et servent de délicieuses spécialités locales, comme le fromage <em>Arseniko</em>.</li>
-                        <li><strong>Mobilité :</strong> Naxos est vaste. Louer un scooter ou une petite voiture pour 2 jours est le meilleur investissement pour explorer l'intérieur de l'île et atteindre les criques sauvages.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="day-image">
-                <img src="https://images.unsplash.com/photo-1605337222881-22db1463cf17?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                     alt="Naxos" referrerpolicy="no-referrer" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='https://images.pexels.com/photos/1010646/pexels-photo-1010646.jpeg?auto=compress&cs=tinysrgb&w=1000';">
-            </div>
-        </div>
-
-        <div class="page-break"></div>
-
-        <!-- Etape 3 -->
-        <div class="itinerary-day no-break">
-            <div class="day-image">
-                <img src="https://images.unsplash.com/photo-1600670984180-8798993883ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                     alt="Amorgos" referrerpolicy="no-referrer" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=1000';">
-            </div>
-            <div class="day-content">
-                <div class="day-subtitle">Jours 7 à 10 • Le Grand Bleu</div>
-                <h3 class="day-title">Amorgos, Beauté Sauvage</h3>
-                <p><strong>Jour 7 :</strong> Traversée en ferry vers Aegiali, installation dans une pension simple, première balade au port et dîner au calme.</p>
-                <ul class="custom-list">
-                    <li><strong>Jour 8 :</strong> Visite du Monastère de Chozoviotissa et plage d’Agia Anna.</li>
-                    <li><strong>Jour 9 :</strong> Randonnée Aegiali → Chora, puis apéritif en fin de journée.</li>
-                    <li><strong>Jour 10 :</strong> Plongée, snorkeling et longue pause déjeuner au bord de l’eau.</li>
-                </ul>
-                <div class="good-address">
-                    <h4>Budget & Conseils</h4>
-                    <p><strong>Budget estimé :</strong> ~60–90 €/jour/pers.</p>
-                    <ul class="custom-list" style="margin-top: 10px; margin-bottom: 0;">
-                        <li><strong>Tradition :</strong> Ne manquez pas de déguster un <em>Psimeni Raki</em> (raki traditionnel chaud au miel et clou de girofle) dans un <em>kafeneio</em> typique de Langada ou Tholaria.</li>
-                        <li><strong>Pratique :</strong> Le Monastère de Chozoviotissa impose une tenue très stricte (épaules et genoux couverts pour les hommes et les femmes). Prévoyez une visite tôt le matin pour éviter les foules et la chaleur.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Etape 4 -->
-        <div class="itinerary-day no-break">
-            <div class="day-content">
-                <div class="day-subtitle">Jours 11 à 14 • Le Joyau Perché</div>
-                <h3 class="day-title">Folegandros & Retour</h3>
-                <p><strong>Jour 11 :</strong> Ferry depuis Amorgos. Arrivée à Karavostasis, bus vers Chora, installation, découverte du village et dîner sur place.</p>
-                <ul class="custom-list">
-                    <li><strong>Jour 12 :</strong> Chora, montée à Panagia, déjeuner à Agali et baignade.</li>
-                    <li><strong>Jour 13 :</strong> Bateau-taxi vers Katergo, plage sauvage et dîner de clôture.</li>
-                </ul>
-                <p><strong>Jour 14 :</strong> Ferry Folegandros → Le Pirée puis métro direct vers l’aéroport. Pas de nuit supplémentaire à Athènes.</p>
-                <div class="good-address">
-                    <h4>Budget & Conseils</h4>
-                    <p><strong>Budget estimé :</strong> ~70–90 €/jour/pers.</p>
-                    <ul class="custom-list" style="margin-top: 10px; margin-bottom: 0;">
-                        <li><strong>Astuce Dîner :</strong> Folegandros est un peu plus chic (et chère) que les autres. Pour un repas doux pour le portefeuille, allez goûter la <em>Matsata</em> (pâtes fraîches maison) dans le petit village traditionnel d'Ano Meria.</li>
-                        <li><strong>Déplacements :</strong> L'île est minuscule, louer une voiture n'est pas nécessaire. Le réseau de petits bus est très fiable et les navettes maritimes depuis Agali sont idéales pour rejoindre les criques.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="day-image">
-                <img src="https://images.unsplash.com/photo-1533083656961-1250b7194f4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                     alt="Folegandros" referrerpolicy="no-referrer" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='https://images.pexels.com/photos/1010646/pexels-photo-1010646.jpeg?auto=compress&cs=tinysrgb&w=1000';">
-            </div>
-        </div>
-
-        <div class="page-break"></div>
-
-        <!-- MAP SECTION -->
-        <h2 class="section-title">La Carte de votre Itinéraire</h2>
-        <div id="map" class="no-break"></div>
-        <div class="page-break"></div>
-
-        <h2 class="section-title">Préparation & Informations</h2>
-
-        <div class="info-grid no-break">
-            <div class="info-card">
-                <h3>À réserver maintenant</h3>
-                <ul class="custom-list">
-                    <li>Vols A/R Paris–Athènes.</li>
-                    <li>Auberge à Athènes pour une nuit.</li>
-                    <li>Ferry Le Pirée → Naxos.</li>
-                    <li>Ferry Naxos → Amorgos.</li>
-                </ul>
-            </div>
-            <div class="info-card">
-                <h3>Un mois avant le départ</h3>
-                <ul class="custom-list">
-                    <li>Hébergements sur les 3 îles.</li>
-                    <li>Ferries Amorgos → Folegandros et Folegandros → Pirée.</li>
-                    <li>Prévenir la banque de votre voyage.</li>
-                    <li>Télécharger les cartes hors ligne.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="info-grid no-break">
-            <div class="info-card">
-                <h3>Bagages : Les Essentiels</h3>
-                <ul class="custom-list">
-                    <li>Passeports + photocopies.</li>
-                    <li>Cartes bancaires + téléphone + chargeur.</li>
-                    <li>Crème solaire SPF50 et médicaments personnels.</li>
-                    <li>Carte de secours et un peu d’espèces.</li>
-                </ul>
-            </div>
-            <div class="info-card">
-                <h3>Vêtements & Matériel</h3>
-                <ul class="custom-list">
-                    <li>T-shirts légers, shorts, tenue pour les soirées.</li>
-                    <li>Maillots de bain × 2.</li>
-                    <li>Chaussures de marche et sandales.</li>
-                    <li>Sac à dos, gourde, tuba, serviette microfibre.</li>
-                    <li>Tenue couvrante pour les monastères.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="info-grid no-break">
-            <div class="info-card">
-                <h3>Nos Conseils : À Faire</h3>
-                <ul class="custom-list">
-                    <li>Apprendre quelques mots grecs (bonjour, merci).</li>
-                    <li>Dîner tard sans se presser, à l'heure locale.</li>
-                    <li>Demander le plat du jour dans les tavernes.</li>
-                    <li>Prendre son temps dans les ruelles des villages.</li>
-                </ul>
-            </div>
-            <div class="info-card">
-                <h3>À Éviter</h3>
-                <ul class="custom-list">
-                    <li>Le maillot de bain dans les monastères ou villages.</li>
-                    <li>Attendre les ferries à la toute dernière minute.</li>
-                    <li>Négliger les espèces (indispensable pour les tavernes).</li>
-                    <li>Jeter le papier toilette dans les toilettes (utiliser la poubelle).</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="page-break"></div>
-
-        <div class="info-grid no-break">
-            <div class="info-card">
-                <h3>Estimation Budgétaire</h3>
-                <table style="margin-top: 15px;">
-                    <tr><td>Vols A/R Paris–Athènes</td><td style="text-align: right;">150 – 250 €</td></tr>
-                    <tr><td>Ferries inter-îles</td><td style="text-align: right;">100 – 160 €</td></tr>
-                    <tr><td>Hébergement (13 nuits)</td><td style="text-align: right;">350 – 500 €</td></tr>
-                    <tr><td>Restauration</td><td style="text-align: right;">280 – 420 €</td></tr>
-                    <tr><td>Activités</td><td style="text-align: right;">100 – 200 €</td></tr>
-                    <tr><td>Transports locaux</td><td style="text-align: right;">30 – 50 €</td></tr>
-                    <tr><td>Divers / imprévus</td><td style="text-align: right;">80 – 150 €</td></tr>
-                    <tr><td class="price-total">Budget Estimé (par pers.)</td><td class="price-total" style="text-align: right;">~ 1 090 – 1 730 €</td></tr>
-                </table>
-                <p style="font-size: 0.85em; color: var(--text-light); margin-top: 20px; font-style: italic;">Le budget prévu de 2 000–3 000 €/pers. laisse une bonne marge pour améliorer certains hébergements ou multiplier les bons restos.</p>
-            </div>
-
-            <div class="info-card">
-                <h3>Informations Pratiques</h3>
-                <table style="margin-bottom: 30px; margin-top: 15px;">
-                    <tr><td style="font-weight: bold; width: 40%;">Monnaie</td><td>Euro (€)</td></tr>
-                    <tr><td style="font-weight: bold;">Langue</td><td>Grec, anglais souvent compris dans les îles</td></tr>
-                    <tr><td style="font-weight: bold;">Prises électriques</td><td>Type C/F — compatible depuis la France</td></tr>
-                    <tr><td style="font-weight: bold;">Urgences</td><td>112</td></tr>
-                </table>
-                <p style="font-size: 0.85em; color: var(--text-light); margin-top: 20px; font-style: italic;">v 1.1</p>
-            </div>
-        </div>
-
+  <!-- CADEAU 2 : Gonfleur paddle -->
+  <div class="gift" onclick="this.classList.toggle('flipped'); pop()">
+    <div class="gift-inner">
+      <div class="gift-face front">
+        <span class="bow">🎀</span>
+        <span class="hint">Clique pour ouvrir</span>
+      </div>
+      <div class="gift-face back">
+        <div class="icon">🏄‍♀️</div>
+        <h2>Fini le gonflage à la main&nbsp;!</h2>
+        <p>Un <strong>gonfleur électrique sur batterie</strong> pour ton paddle. Plus qu'à appuyer sur un bouton, souffler dans ta serviette, et hop&nbsp;: à l'eau&nbsp;! 💦</p>
+        <a href="https://www.decathlon.fr/vc/pompe-electrique-paddle" target="_blank" rel="noopener">Voir le gonfleur</a>
+      </div>
     </div>
+  </div>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-      // Initialisation de la carte
-      const map = L.map('map').setView([36.8, 25.4], 7);
+  <!-- CADEAU 3 : Rétroviseur vélo -->
+  <div class="gift" onclick="this.classList.toggle('flipped'); pop()">
+    <div class="gift-inner">
+      <div class="gift-face front">
+        <span class="bow">🎀</span>
+        <span class="hint">Clique pour ouvrir</span>
+      </div>
+      <div class="gift-face back">
+        <div class="icon">🚲</div>
+        <h2>Pour rouler l'œil serein</h2>
+        <p>Un joli <strong>rétroviseur Busch &amp; Müller</strong> pour ton vélo. Un peu de sécurité, un peu de style, beaucoup de balades à venir. 🌿</p>
+        <a href="https://www.decathlon.fr/p/retroviseur-de-velo-ville-busch-muller-star-80mm/X8779739/m8779739" target="_blank" rel="noopener">Voir le rétroviseur</a>
+      </div>
+    </div>
+  </div>
 
-      // Fond de carte Positron (CartoDB)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="https://carto.com/attributions">CARTO</a>'
-      }).addTo(map);
+</section>
 
-      // Destinations
-      const destinations = [
-        {
-          name: "Athènes (Départ)",
-          coords: [37.9838, 23.7275],
-          description: "Jour 1 : Arrivée et nuit à Athènes (Monastiraki)."
-        },
-        {
-          name: "Naxos (Chora/Portara)",
-          coords: [37.1025, 25.3764],
-          description: "Jours 2-6 : Portara, Kastro, plages d'Agios Prokopios, Mont Zeus."
-        },
-        {
-          name: "Amorgos (Aegiali)",
-          coords: [36.8417, 25.9069],
-          description: "Jours 7-10 : Monastère de Chozoviotissa, randonnée Aegiali-Chora."
-        },
-        {
-          name: "Folegandros (Chora)",
-          coords: [36.6167, 24.9000],
-          description: "Jours 11-13 : Église Panagia, plage de Katergo."
-        },
-        {
-          name: "Le Pirée (Retour)",
-          coords: [37.9464, 23.6396],
-          description: "Jour 14 : Ferry pour l'aéroport d'Athènes."
-        }
-      ];
+<footer>
+  Avec tout notre amour et une pluie de bisous <span class="heart">❤</span><br>
+  <em>— Lionel &amp; tes amis</em>
+</footer>
 
-      // Ajout des marqueurs (icône par défaut)
-      const defaultIcon = L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-        shadowSize: [41, 41]
-      });
+<script>
+  // Confettis au chargement
+  function launchConfetti(count = 80) {
+    const colors = ['#ff5e8a', '#7f5cff', '#ffd166', '#06d6a0', '#ffffff'];
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (3 + Math.random() * 3) + 's';
+      c.style.animationDelay = Math.random() * 2 + 's';
+      c.style.transform = `rotate(${Math.random() * 360}deg)`;
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 7000);
+    }
+  }
+  // Petits confettis à chaque ouverture de cadeau
+  function pop() { launchConfetti(30); }
 
-      destinations.forEach(dest => {
-        L.marker(dest.coords, { icon: defaultIcon })
-          .addTo(map)
-          .bindPopup(`<b>${dest.name}</b><br>${dest.description}`);
-      });
+  // Lancement initial
+  window.addEventListener('load', () => launchConfetti(100));
+</script>
 
-      // Itinéraire avec la couleur "Dorée" de la charte graphique
-      const latlngs = destinations.map(dest => dest.coords);
-      L.polyline(latlngs, {
-        color: '#cda434', 
-        weight: 4,
-        opacity: 0.9,
-        dashArray: '10, 5'
-      }).addTo(map);
-
-      // Ajuste la vue
-      map.fitBounds(L.latLngBounds(latlngs));
-    </script>
 </body>
 </html>
